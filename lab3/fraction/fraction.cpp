@@ -4,7 +4,7 @@
 #include <cstring>
 #include <iostream>
 
-const int N_DEC = 4; // точность для работы с double
+const int N_DEC = 4;
 
 void fraction::reduce() {
   if (denominator < 0) {
