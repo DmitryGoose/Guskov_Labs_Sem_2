@@ -2,10 +2,8 @@
 #include <cstring>
 #include <iostream>
 
-// Конструктор по умолчанию
 Candidate::Candidate() : name(nullptr), age(0), party(nullptr), votes(0) {}
 
-// Параметризованный конструктор
 Candidate::Candidate(const char* name, int age, const char* party, int votes) {
     this->name = new char[strlen(name) + 1];
     strcpy(this->name, name);
@@ -15,7 +13,6 @@ Candidate::Candidate(const char* name, int age, const char* party, int votes) {
     this->votes = votes;
 }
 
-// Конструктор копирования
 Candidate::Candidate(const Candidate& other) {
     if (other.name) {
         this->name = new char[strlen(other.name) + 1];
@@ -36,13 +33,11 @@ Candidate::Candidate(const Candidate& other) {
     this->votes = other.votes;
 }
 
-// Деструктор
 Candidate::~Candidate() {
     delete[] name;
     delete[] party;
 }
 
-// Оператор присваивания
 Candidate& Candidate::operator=(const Candidate& other) {
     if (this != &other) {
         delete[] name;
@@ -69,7 +64,6 @@ Candidate& Candidate::operator=(const Candidate& other) {
     return *this;
 }
 
-// Геттеры
 const char* Candidate::getName() const {
     return name;
 }
@@ -86,7 +80,6 @@ int Candidate::getVotes() const {
     return votes;
 }
 
-// Сеттеры
 void Candidate::setName(const char* name) {
     delete[] this->name;
     this->name = new char[strlen(name) + 1];
@@ -107,7 +100,6 @@ void Candidate::setVotes(int votes) {
     this->votes = votes;
 }
 
-// Операторы ввода и вывода
 std::ostream& operator<<(std::ostream& out, const Candidate& candidate) {
     out << candidate.name << " " << candidate.age << " " << candidate.party << " " << candidate.votes;
     return out;
@@ -122,7 +114,6 @@ std::istream& operator>>(std::istream& in, Candidate& candidate) {
     return in;
 }
 
-// Операторы сравнения
 bool Candidate::operator<(const Candidate& other) const {
     return votes < other.votes;
 }
@@ -131,7 +122,6 @@ bool Candidate::operator==(const Candidate& other) const {
     return strcmp(name, other.name) == 0;
 }
 
-// Работа с базой данных
 void Candidate::readDatabase(const char* filename, Candidate*& candidates, int& count) {
     std::ifstream file(filename);
     if (!file) {
@@ -164,6 +154,11 @@ void Candidate::writeDatabase(const char* filename, Candidate* candidates, int c
 }
 
 void Candidate::sortDatabase(Candidate* candidates, int count) {
+    if (candidates == nullptr || count == 0) {
+        std::cerr << "Ошибка: Невозможно отсортировать пустой массив кандидатов." << std::endl;
+        return;
+    }
+
     for (int i = 0; i < count - 1; ++i) {
         for (int j = 0; j < count - i - 1; ++j) {
             if (candidates[j] < candidates[j + 1]) {
@@ -171,6 +166,7 @@ void Candidate::sortDatabase(Candidate* candidates, int count) {
             }
         }
     }
+    std::cout << "База данных отсортирована по голосам.\n";
 }
 
 void Candidate::addCandidate(Candidate*& candidates, int& count, const Candidate& candidate) {
@@ -210,6 +206,6 @@ void Candidate::printDatabase(Candidate* candidates, int count) {
     }
     std::cout << "База данных кандидатов:" << std::endl;
     for (int i = 0; i < count; ++i) {
-        std::cout << candidates[i] << std::endl;
+        std::cout << (i + 1) << ". " << candidates[i] << std::endl;
     }
 }

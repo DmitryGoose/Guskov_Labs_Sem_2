@@ -2,7 +2,6 @@
 #include "Candidate.h"
 #include <iostream>
 
-// Определение функций для меню
 int showMainMenu();
 void handlePlanetDatabase();
 void handleCandidateDatabase();
@@ -49,7 +48,6 @@ void handlePlanetDatabase() {
     int count = 0;
     const char* filename = "sunsys.txt";
 
-    // Чтение базы данных
     Planet::readDatabase(filename, planets, count);
 
     int choice;
@@ -152,7 +150,6 @@ void handlePlanetDatabase() {
 
             case 5:
                 Planet::sortDatabase(planets, count);
-                std::cout << "База данных отсортирована по диаметру.\n";
                 break;
 
             case 6:
@@ -169,7 +166,6 @@ void handlePlanetDatabase() {
         }
     }
 
-    // Освобождаем память перед выходом
     delete[] planets;
 }
 
@@ -178,7 +174,6 @@ void handleCandidateDatabase() {
     int count = 0;
     const char* filename = "candidates.txt";
 
-    // Чтение базы данных
     Candidate::readDatabase(filename, candidates, count);
 
     int choice;
@@ -281,7 +276,6 @@ void handleCandidateDatabase() {
 
             case 5:
                 Candidate::sortDatabase(candidates, count);
-                std::cout << "База данных отсортирована по голосам.\n";
                 break;
 
             case 6:
@@ -298,6 +292,5 @@ void handleCandidateDatabase() {
         }
     }
 
-    // Освобождаем память перед выходом
     delete[] candidates;
 }

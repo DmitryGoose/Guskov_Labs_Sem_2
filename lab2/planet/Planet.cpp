@@ -2,10 +2,8 @@
 #include <cstring>
 #include <iostream>
 
-// Конструктор по умолчанию
 Planet::Planet() : name(nullptr), diameter(0), life(false), satellites(0) {}
 
-// Параметризованный конструктор
 Planet::Planet(const char* name, int diameter, bool life, int satellites) {
     this->name = new char[strlen(name) + 1];
     strcpy(this->name, name);
@@ -14,7 +12,6 @@ Planet::Planet(const char* name, int diameter, bool life, int satellites) {
     this->satellites = satellites;
 }
 
-// Конструктор копирования
 Planet::Planet(const Planet& other) {
     if (other.name) {
         this->name = new char[strlen(other.name) + 1];
@@ -27,12 +24,10 @@ Planet::Planet(const Planet& other) {
     this->satellites = other.satellites;
 }
 
-// Деструктор
 Planet::~Planet() {
     delete[] name;
 }
 
-// Оператор присваивания
 Planet& Planet::operator=(const Planet& other) {
     if (this != &other) {
         delete[] name;
@@ -49,7 +44,6 @@ Planet& Planet::operator=(const Planet& other) {
     return *this;
 }
 
-// Геттеры
 const char* Planet::getName() const {
     return name;
 }
@@ -66,7 +60,6 @@ int Planet::getSatellites() const {
     return satellites;
 }
 
-// Сеттеры
 void Planet::setName(const char* name) {
     delete[] this->name;
     this->name = new char[strlen(name) + 1];
@@ -85,7 +78,6 @@ void Planet::setSatellites(int satellites) {
     this->satellites = satellites;
 }
 
-// Операторы ввода и вывода
 std::ostream& operator<<(std::ostream& out, const Planet& planet) {
     out << planet.name << " " << planet.diameter << " " << planet.life << " " << planet.satellites;
     return out;
@@ -98,7 +90,6 @@ std::istream& operator>>(std::istream& in, Planet& planet) {
     return in;
 }
 
-// Операторы сравнения
 bool Planet::operator<(const Planet& other) const {
     return diameter < other.diameter;
 }
@@ -107,7 +98,6 @@ bool Planet::operator==(const Planet& other) const {
     return strcmp(name, other.name) == 0;
 }
 
-// Работа с базой данных
 void Planet::readDatabase(const char* filename, Planet*& planets, int& count) {
     std::ifstream file(filename);
     if (!file) {
@@ -140,6 +130,11 @@ void Planet::writeDatabase(const char* filename, Planet* planets, int count) {
 }
 
 void Planet::sortDatabase(Planet* planets, int count) {
+    if (planets == nullptr || count == 0) {
+        std::cerr << "Ошибка: Невозможно отсортировать пустую базу данных планет." << std::endl;
+        return;
+    }
+
     for (int i = 0; i < count - 1; ++i) {
         for (int j = 0; j < count - i - 1; ++j) {
             if (planets[j] < planets[j + 1]) {
@@ -147,6 +142,7 @@ void Planet::sortDatabase(Planet* planets, int count) {
             }
         }
     }
+    std::cout << "База данных отсортирована по диаметру.\n";
 }
 
 void Planet::addPlanet(Planet*& planets, int& count, const Planet& planet) {
@@ -186,6 +182,6 @@ void Planet::printDatabase(Planet* planets, int count) {
     }
     std::cout << "База данных планет:" << std::endl;
     for (int i = 0; i < count; ++i) {
-        std::cout << planets[i] << std::endl;
+        std::cout << (i + 1) << ". " << planets[i] << std::endl;
     }
 }
