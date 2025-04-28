@@ -2,7 +2,7 @@
 #include "Stack.h"
 
 int main() {
-    int number = 3960;
+    int number = 900;
     MyStack<int> stack;
 
     Multipliers(number, stack);
